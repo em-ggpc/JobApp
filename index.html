@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Application</title>
+</head>
+<body>
+    <h2>Job Application</h2>
+    <form id="jobForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+        
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" name="birthday" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="fileUpload">Upload Files:</label>
+        <input type="file" id="fileUpload" name="files" multiple required><br><br>
+        
+        <button type="button" onclick="submitForm()">Submit Application</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            const form = document.getElementById('jobForm');
+            const formData = new FormData(form);
+
+            // Convert form data to object
+            const data = {
+                name: formData.get('name'),
+                age: formData.get('age'),
+                birthday: formData.get('birthday'),
+                email: formData.get('email'),
+                files: formData.getAll('files')
+            };
+
+            // Send data to Google Apps Script Web App URL
+            fetch('https://script.google.com/macros/s/AKfycbzZgU5XwUcU380KCRk97hupeN-76HHqVmXY6IJdzmzHwE7CU1RgHY8Rvaauw9QfKWoNCw/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.text())
+            .then(result => alert(result))
+            .catch(error => alert('Error: ' + error));
+        }
+    </script>
+</body>
+</html>
